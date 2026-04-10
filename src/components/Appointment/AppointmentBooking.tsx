@@ -6,7 +6,7 @@ import { SPECIALTIES, ERROR_MESSAGES } from '../../utils/constants'
 import { formatDateTime, isFutureDate } from '../../utils/dateFormatting'
 import { ApiClientError } from '../../utils/apiClient'
 import * as appointmentService from '../../services/appointmentService'
-import type { CreateAppointmentResponse, Doctor } from '../../types/api'
+import type { Doctor, ScheduleAppointmentResponse, Specialty } from '../../types/api'
 
 type Step = 1 | 2 | 3
 
@@ -22,7 +22,7 @@ export default function AppointmentBooking() {
     const [error, setError] = useState<string | null>(null)
     const [isLoadingDoctors, setIsLoadingDoctors] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [confirmation, setConfirmation] = useState<CreateAppointmentResponse | null>(null)
+    const [confirmation, setConfirmation] = useState<ScheduleAppointmentResponse | null>(null)
 
     const selectedDoctor = doctors.find((doctor) => doctor.id === selectedDoctorId)
 
@@ -50,7 +50,7 @@ export default function AppointmentBooking() {
 
         try {
             const doctorsResponse = await appointmentService.getDoctorsBySpecialty(
-                nextSpecialty.toUpperCase(),
+                nextSpecialty,
                 token,
             )
 
@@ -102,9 +102,8 @@ export default function AppointmentBooking() {
             const response = await appointmentService.createAppointment(
                 {
                     patientId: user.patientId,
-                    doctorId: selectedDoctor.id,
-                    specialty: specialtyKey.toUpperCase(),
-                    scheduledAt: selectedSlot,
+                    specialty: specialtyKey as Specialty,
+                    date: selectedSlot,
                 },
                 token,
             )
@@ -251,7 +250,7 @@ export default function AppointmentBooking() {
                         <div className="grid gap-3 border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
                             <p className="font-semibold">Cita programada correctamente.</p>
                             <p>
-                                <strong>ID:</strong> {confirmation.appointment.id}
+                                <strong>ID:</strong> {confirmation.appointmentId}
                             </p>
                             <p>
                                 <strong>Recordatorio:</strong>{' '}

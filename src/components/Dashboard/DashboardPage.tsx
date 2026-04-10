@@ -38,7 +38,7 @@ export default function DashboardPage() {
             ])
 
             setAppointments(history.appointments || [])
-            setLaboratories(labs.length > 0 ? labs : history.laboratories || [])
+            setLaboratories(labs.length > 0 ? labs : history.laboratoryResults || [])
         } catch (caught) {
             if (caught instanceof ApiClientError) {
                 setError(
@@ -60,7 +60,8 @@ export default function DashboardPage() {
         () =>
             [...appointments].sort(
                 (a, b) =>
-                    new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime(),
+                    new Date(a.appointmentDate).getTime() -
+                    new Date(b.appointmentDate).getTime(),
             ),
         [appointments],
     )
@@ -68,7 +69,7 @@ export default function DashboardPage() {
     const latestResults = useMemo(
         () =>
             [...laboratories]
-                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                .sort((a, b) => new Date(b.testDate).getTime() - new Date(a.testDate).getTime())
                 .slice(0, 5),
         [laboratories],
     )
@@ -82,7 +83,7 @@ export default function DashboardPage() {
             await appointmentService.cancelAppointment(appointmentId, token)
             setAppointments((prev) =>
                 prev.map((appointment) =>
-                    appointment.id === appointmentId
+                    appointment.appointmentId === appointmentId
                         ? { ...appointment, status: 'CANCELLED' }
                         : appointment,
                 ),

@@ -1,6 +1,6 @@
 import { apiRequest } from '../utils/apiClient'
 import type {
-    Patient,
+    PatientResponse,
     RegisterPatientRequest,
     RegisterPatientResponse,
 } from '../types/api'
@@ -16,9 +16,9 @@ export async function registerPatient(
 
 export async function getPatientById(
     patientId: string,
-    token: string,
-): Promise<Patient> {
-    return apiRequest<Patient>(`/api/clinic/patient/${patientId}`, {
+    token?: string,
+): Promise<PatientResponse> {
+    return apiRequest<PatientResponse>(`/api/clinic/patient/${patientId}`, {
         method: 'GET',
         token,
     })

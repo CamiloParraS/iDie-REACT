@@ -1,11 +1,11 @@
 import { apiRequest } from '../utils/apiClient'
-import type { ClinicalHistory } from '../types/api'
+import type { CompleteHistoryResponse } from '../types/api'
 
 export async function getHistory(
     patientId: string,
-    token: string,
-): Promise<ClinicalHistory> {
-    return apiRequest<ClinicalHistory>(`/api/clinic/history/${patientId}`, {
+    token?: string,
+): Promise<CompleteHistoryResponse> {
+    return apiRequest<CompleteHistoryResponse>(`/api/clinic/history/${patientId}`, {
         method: 'GET',
         token,
     })

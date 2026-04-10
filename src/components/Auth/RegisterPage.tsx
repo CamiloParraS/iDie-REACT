@@ -11,7 +11,7 @@ interface RegisterFormState {
     firstName: string
     lastName: string
     documentType: string
-    documentNumber: string
+    document: string
     email: string
     phone: string
     birthDate: string
@@ -21,7 +21,7 @@ const initialForm: RegisterFormState = {
     firstName: '',
     lastName: '',
     documentType: 'CC',
-    documentNumber: '',
+    document: '',
     email: '',
     phone: '',
     birthDate: '',
@@ -33,7 +33,7 @@ function validate(form: RegisterFormState): Partial<Record<keyof RegisterFormSta
     if (!form.firstName.trim()) errors.firstName = 'El nombre es obligatorio.'
     if (!form.lastName.trim()) errors.lastName = 'El apellido es obligatorio.'
     if (!form.documentType.trim()) errors.documentType = 'Selecciona el tipo de documento.'
-    if (!form.documentNumber.trim()) errors.documentNumber = 'El documento es obligatorio.'
+    if (!form.document.trim()) errors.document = 'El documento es obligatorio.'
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(form.email.trim())) {
@@ -69,7 +69,7 @@ export default function RegisterPage() {
             firstName: form.firstName.trim(),
             lastName: form.lastName.trim(),
             documentType: form.documentType.toUpperCase(),
-            documentNumber: form.documentNumber.trim(),
+            document: form.document.trim(),
             email: form.email.trim(),
             phone: form.phone.trim(),
             birthDate: form.birthDate,
@@ -158,13 +158,13 @@ export default function RegisterPage() {
                         Numero de documento *
                         <input
                             className="idie-input px-3 py-2"
-                            value={form.documentNumber}
+                            value={form.document}
                             onChange={(event) =>
-                                setForm((prev) => ({ ...prev, documentNumber: event.target.value }))
+                                setForm((prev) => ({ ...prev, document: event.target.value }))
                             }
                         />
-                        {fieldErrors.documentNumber && (
-                            <span className="text-xs text-red-700">{fieldErrors.documentNumber}</span>
+                        {fieldErrors.document && (
+                            <span className="text-xs text-red-700">{fieldErrors.document}</span>
                         )}
                     </label>
 

@@ -4,7 +4,7 @@ import {
     REQUEST_RETRIES,
     REQUEST_TIMEOUT_MS,
 } from './constants'
-import type { ApiEnvelope, ApiFieldError, BackendErrorCode } from '../types/api'
+import type { ApiEnvelope, BackendErrorCode } from '../types/api'
 
 interface ApiRequestOptions extends Omit<RequestInit, 'body'> {
     token?: string
@@ -20,19 +20,16 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 export class ApiClientError extends Error {
     status: number
     errorCode?: BackendErrorCode
-    fieldErrors?: ApiFieldError[]
 
     constructor(params: {
         message: string
         status?: number
         errorCode?: BackendErrorCode
-        fieldErrors?: ApiFieldError[]
     }) {
         super(params.message)
         this.name = 'ApiClientError'
         this.status = params.status ?? 0
         this.errorCode = params.errorCode
-        this.fieldErrors = params.fieldErrors
     }
 }
 
@@ -59,19 +56,24 @@ function parseEnvelope<T>(payload: unknown): ApiEnvelope<T> | null {
         return null
     }
 
+    if (typeof payload.success !== 'boolean') {
+        return null
+    }
+
     const maybeData = payload.data as T | undefined
     const maybeErrorCode = payload.errorCode as BackendErrorCode | undefined
     const maybeMessage = payload.message
-    const maybeErrors = payload.errors
+    const maybeTimestamp = payload.timestamp
 
     return {
-        success: typeof payload.success === 'boolean' ? payload.success : undefined,
+        success: payload.success,
         data: maybeData,
         errorCode: maybeErrorCode,
-        message: typeof maybeMessage === 'string' ? maybeMessage : undefined,
-        errors: Array.isArray(maybeErrors)
-            ? (maybeErrors as ApiFieldError[])
-            : undefined,
+        message: typeof maybeMessage === 'string' ? maybeMessage : '',
+        timestamp:
+            typeof maybeTimestamp === 'string'
+                ? maybeTimestamp
+                : new Date().toISOString(),
     }
 }
 
@@ -116,7 +118,7 @@ export async function apiRequest<T>(
                 .catch(() => ({ message: 'Respuesta no valida del servidor.' }))
             const envelope = parseEnvelope<T>(rawResponse)
 
-            if (!response.ok || envelope?.errorCode) {
+            if (!response.ok || envelope?.success === false || envelope?.errorCode) {
                 const errorCode = envelope?.errorCode
                 const errorMessage =
                     envelope?.message ||
@@ -127,7 +129,6 @@ export async function apiRequest<T>(
                     message: errorMessage,
                     status: response.status,
                     errorCode,
-                    fieldErrors: envelope?.errors,
                 })
             }
 

@@ -44,6 +44,7 @@ export const ERROR_MESSAGES: Record<BackendErrorCode, string> = {
     NO_AVAILABLE_DOCTOR: 'No hay medicos disponibles para la especialidad seleccionada.',
     PATIENT_NOT_FOUND: 'No se encontro el paciente solicitado.',
     APPOINTMENT_NOT_FOUND: 'La cita ya no existe o fue eliminada.',
+    ALLERGY_CONFLICT: 'La prescripcion presenta conflicto con alergias registradas.',
     VALIDATION_ERROR: 'Hay datos invalidos. Revisa los campos marcados.',
     INTERNAL_ERROR: 'Ocurrio un error interno. Intenta de nuevo en unos minutos.',
 }
@@ -51,11 +52,11 @@ export const ERROR_MESSAGES: Record<BackendErrorCode, string> = {
 export function getRouteByRole(role: string | undefined): string {
     const normalizedRole = role?.toUpperCase()
 
-    if (normalizedRole === 'PATIENT') {
+    if (normalizedRole === 'DOCTOR') {
         return '/dashboard'
     }
 
-    if (normalizedRole === 'DOCTOR') {
+    if (normalizedRole === 'RECEPTIONIST') {
         return '/dashboard'
     }
 

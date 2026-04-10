@@ -3,44 +3,42 @@ import type {
     AuthRole,
     AuthSession,
     AuthUser,
+    LoginPayload,
     LoginRequest,
+    LoginResponse,
     RegisterPatientResponse,
+    ValidateResponse,
 } from '../types/api'
-
-interface AuthResponse {
-    token?: string
-    role?: string
-    patientId?: string
-    user?: Partial<AuthUser>
-    id?: string
-    username?: string
-    firstName?: string
-    lastName?: string
-    email?: string
-}
 
 function parseRole(role: string | undefined): AuthRole {
     const normalized = role?.toUpperCase() || 'UNKNOWN'
-    if (normalized === 'PATIENT' || normalized === 'DOCTOR' || normalized === 'ADMIN') {
+    if (normalized === 'ADMIN' || normalized === 'DOCTOR' || normalized === 'RECEPTIONIST') {
         return normalized
     }
     return 'UNKNOWN'
 }
 
-function normalizeUser(payload: AuthResponse): AuthUser {
-    const sourceUser = payload.user
+function normalizeUser(payload: {
+    username?: string
+    role?: string
+    patientId?: string
+    id?: string
+    firstName?: string
+    lastName?: string
+    email?: string
+}): AuthUser {
     return {
-        id: sourceUser?.id || payload.id || payload.patientId || payload.username || payload.email || 'desconocido',
-        username: sourceUser?.username || payload.username || sourceUser?.email || payload.email || 'paciente',
-        role: parseRole(sourceUser?.role || payload.role),
-        patientId: sourceUser?.patientId || payload.patientId,
-        firstName: sourceUser?.firstName || payload.firstName,
-        lastName: sourceUser?.lastName || payload.lastName,
-        email: sourceUser?.email || payload.email,
+        id: payload.id || payload.patientId || payload.username || payload.email || 'unknown',
+        username: payload.username || payload.email || 'user',
+        role: parseRole(payload.role),
+        patientId: payload.patientId,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        email: payload.email,
     }
 }
 
-function toSession(payload: AuthResponse): AuthSession {
+function toSession(payload: LoginResponse): AuthSession {
     if (!payload.token) {
         throw new ApiClientError({
             message: 'El servidor no retorno un token de sesion.',
@@ -49,30 +47,42 @@ function toSession(payload: AuthResponse): AuthSession {
 
     return {
         token: payload.token,
-        user: normalizeUser(payload),
+        user: normalizeUser({ username: payload.username, role: payload.role }),
     }
 }
 
+async function toSha256Hex(input: string): Promise<string> {
+    const encoder = new TextEncoder()
+    const data = encoder.encode(input)
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+    const hashBytes = Array.from(new Uint8Array(hashBuffer))
+    return hashBytes.map((b) => b.toString(16).padStart(2, '0')).join('')
+}
+
 export async function login(credentials: LoginRequest): Promise<AuthSession> {
-    const response = await apiRequest<AuthResponse>('/api/auth/login', {
+    const payload: LoginPayload = {
+        username: credentials.username,
+        passwordHash: await toSha256Hex(credentials.password),
+    }
+
+    const response = await apiRequest<LoginResponse>('/api/auth/login', {
         method: 'POST',
-        body: credentials,
+        body: payload,
     })
 
     return toSession(response)
 }
 
 export async function validate(token: string): Promise<AuthSession> {
-    const response = await apiRequest<AuthResponse>('/api/auth/validate', {
+    const response = await apiRequest<ValidateResponse>('/api/auth/validate', {
         method: 'GET',
         token,
     })
 
-    if (!response.token) {
-        response.token = token
+    return {
+        token,
+        user: normalizeUser({ username: response.username, role: response.role }),
     }
-
-    return toSession(response)
 }
 
 export async function logout(token: string): Promise<void> {
@@ -85,15 +95,6 @@ export async function logout(token: string): Promise<void> {
 export function sessionFromRegister(
     payload: RegisterPatientResponse,
 ): AuthSession | null {
-    if (!payload.token) {
-        return null
-    }
-
-    return toSession({
-        token: payload.token,
-        patientId: payload.patientId,
-        user: payload.user,
-        email: payload.user?.email,
-        username: payload.user?.username || payload.user?.email,
-    })
+    void payload
+    return null
 }

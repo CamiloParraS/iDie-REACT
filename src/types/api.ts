@@ -1,27 +1,47 @@
 export type BackendErrorCode =
+    | 'PATIENT_NOT_FOUND'
+    | 'DUPLICATE_DOCUMENT'
+    | 'APPOINTMENT_NOT_FOUND'
+    | 'NO_AVAILABLE_DOCTOR'
     | 'INVALID_CREDENTIALS'
     | 'INVALID_TOKEN'
-    | 'DUPLICATE_DOCUMENT'
-    | 'NO_AVAILABLE_DOCTOR'
-    | 'PATIENT_NOT_FOUND'
-    | 'APPOINTMENT_NOT_FOUND'
+    | 'ALLERGY_CONFLICT'
     | 'VALIDATION_ERROR'
     | 'INTERNAL_ERROR'
 
-export interface ApiFieldError {
-    field: string
+export interface ApiResponse<T> {
+    success: boolean
     message: string
-}
-
-export interface ApiEnvelope<T> {
-    success?: boolean
     data?: T
     errorCode?: BackendErrorCode
-    message?: string
-    errors?: ApiFieldError[]
+    timestamp: string
 }
 
-export type AuthRole = 'PATIENT' | 'DOCTOR' | 'ADMIN' | 'UNKNOWN'
+export interface ApiSuccessResponse<T> extends ApiResponse<T> {
+    success: true
+    data: T
+}
+
+export interface ApiErrorResponse extends ApiResponse<never> {
+    success: false
+    data?: undefined
+    errorCode: BackendErrorCode
+}
+
+export type ApiEnvelope<T> = ApiResponse<T>
+
+export type Role = 'ADMIN' | 'DOCTOR' | 'RECEPTIONIST'
+export type AuthRole = Role | 'UNKNOWN'
+export type Specialty =
+    | 'CARDIOLOGY'
+    | 'DERMATOLOGY'
+    | 'PEDIATRICS'
+    | 'NEUROLOGY'
+    | 'OPHTHALMOLOGY'
+export type Severity = 'LOW' | 'MEDIUM' | 'HIGH'
+export type AppointmentStatus = 'SCHEDULED' | 'CANCELLED'
+export type PrescriptionStatus = 'ACTIVE' | 'EXPIRED'
+export type LabResultStatus = 'PENDING' | 'COMPLETED'
 
 export interface AuthUser {
     id: string
@@ -43,116 +63,192 @@ export interface LoginRequest {
     password: string
 }
 
+export interface LoginPayload {
+    username: string
+    passwordHash: string
+}
+
+export interface LoginResponse {
+    token: string
+    username: string
+    role: Role
+    expiresIn: number
+}
+
+export interface ValidateResponse {
+    valid: boolean
+    username: string
+    role: Role
+}
+
+export interface LogoutResponse {
+    username: string
+}
+
 export interface RegisterPatientRequest {
     firstName: string
     lastName: string
     documentType: string
-    documentNumber: string
+    document: string
     email: string
     phone: string
     birthDate: string
 }
 
-export interface RegisterPatientResponse {
-    patientId: string
-    token?: string
-    user?: Partial<AuthUser>
-}
-
-export interface Patient {
+export interface PatientResponse {
     id: string
     firstName: string
     lastName: string
     documentType: string
-    documentNumber: string
+    document: string
     email: string
     phone: string
     birthDate: string
-    registeredAt?: string
+    createdAt: string
+    updatedAt: string
 }
 
-export type SeverityKey = 'LOW' | 'MEDIUM' | 'HIGH'
+export type RegisterPatientResponse = PatientResponse
+export type Patient = PatientResponse
+export type PatientProfileResponse = PatientResponse
 
-export interface Allergy {
+export interface ScheduleAppointmentRequest {
+    patientId: string
+    specialty: Specialty
+    date: string
+}
+
+export interface ScheduleAppointmentResponse {
+    appointmentId: string
+    patientId: string
+    doctorId: string
+    doctorName: string
+    specialty: Specialty
+    appointmentDate: string
+    status: AppointmentStatus
+    reminder: string
+}
+
+export interface CancelAppointmentResponse {
+    appointmentId: string
+    status: AppointmentStatus
+}
+
+export interface DoctorResponse {
     id: string
     name: string
-    severity: SeverityKey
+    specialty: Specialty
+    availableSlots: string[]
 }
 
-export interface Consultation {
-    id: string
-    date: string
+export type Doctor = DoctorResponse
+
+export interface ConsultationRequest {
+    patientId: string
     doctorName: string
     diagnosis: string
-    notes: string
+    notes?: string
 }
 
-export interface Medication {
+export interface ConsultationResponse {
     id: string
+    patientId: string
+    consultationDate: string
+    doctorName: string
+    diagnosis: string
+    notes?: string
+}
+
+export type Consultation = ConsultationResponse
+
+export interface AllergyRequest {
+    patientId: string
+    allergyName: string
+    severity: Severity
+}
+
+export interface AllergyResponse {
+    id: string
+    patientId: string
+    allergyName: string
+    severity: Severity
+}
+
+export type Allergy = AllergyResponse
+
+export interface MedicationRequest {
     name: string
-    dose: string
+    dosage: string
     frequency: string
     duration: string
 }
 
-export type PrescriptionStatus = 'ACTIVE' | 'EXPIRED'
+export interface CreatePrescriptionRequest {
+    patientId: string
+    medications: MedicationRequest[]
+}
 
-export interface Prescription {
-    id: string
-    date: string
-    status: PrescriptionStatus
+export interface MedicationResponse {
+    name: string
+    dosage: string
+    frequency: string
     duration: string
-    medications: Medication[]
-    allergyWarning?: boolean
 }
 
-export type LaboratoryStatus = 'PENDING' | 'COMPLETED'
-
-export interface LaboratoryResult {
+export interface PrescriptionResponse {
     id: string
-    date: string
-    testType: string
-    value: number | null
-    referenceMin: number | null
-    referenceMax: number | null
-    status: LaboratoryStatus
+    patientId: string
+    medications: MedicationResponse[]
+    prescriptionDate: string
+    duration: string
+    status: PrescriptionStatus
+    allergyWarnings: string[]
 }
 
-export type AppointmentStatus = 'SCHEDULED' | 'CANCELLED'
+export type Prescription = PrescriptionResponse
+
+export interface RequestLabTestRequest {
+    patientId: string
+    testNames: string[]
+}
+
+export interface RequestLabTestResponse {
+    patientId: string
+    requestedTests: string[]
+    requestDate: string
+    estimatedCompletionDate: string
+    status: LabResultStatus
+}
+
+export interface LabResultResponse {
+    id: string
+    patientId: string
+    testName: string
+    resultValue: number | null
+    referenceMin: number
+    referenceMax: number
+    testDate: string
+    status: LabResultStatus
+}
+
+export type LaboratoryResult = LabResultResponse
 
 export interface Appointment {
-    id: string
-    specialty: string
+    appointmentId: string
     doctorId: string
-    doctorName: string
-    scheduledAt: string
+    appointmentDate: string
     status: AppointmentStatus
+    doctorName?: string
+    specialty?: Specialty
 }
 
-export interface ClinicalHistory {
-    patient: Patient
-    allergies: Allergy[]
-    consultations: Consultation[]
-    prescriptions: Prescription[]
-    laboratories?: LaboratoryResult[]
-    appointments?: Appointment[]
+export interface CompleteHistoryResponse {
+    patient: PatientResponse
+    appointments: Appointment[]
+    consultations: ConsultationResponse[]
+    allergies: AllergyResponse[]
+    activePrescriptions: PrescriptionResponse[]
+    laboratoryResults: LabResultResponse[]
 }
 
-export interface Doctor {
-    id: string
-    name: string
-    specialty: string
-    availableSlots: string[]
-}
-
-export interface CreateAppointmentRequest {
-    patientId: string
-    doctorId: string
-    specialty: string
-    scheduledAt: string
-}
-
-export interface CreateAppointmentResponse {
-    appointment: Appointment
-    reminder?: string
-}
+export type ClinicalHistory = CompleteHistoryResponse
