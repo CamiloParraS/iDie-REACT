@@ -61,11 +61,11 @@ export default function HistoryPage() {
                 setPatient(historyResponse.patient)
                 setAllergies(historyResponse.allergies || [])
                 setConsultations(historyResponse.consultations || [])
-                setPrescriptions(historyResponse.prescriptions || [])
+                setPrescriptions(historyResponse.activePrescriptions || [])
                 setLaboratories(
                     laboratoryResponse.length > 0
                         ? laboratoryResponse
-                        : historyResponse.laboratories || [],
+                    : historyResponse.laboratoryResults || [],
                 )
             } catch (caught) {
                 if (caught instanceof ApiClientError) {

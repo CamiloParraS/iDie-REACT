@@ -13,7 +13,9 @@ export default function PrescriptionsTab({ prescriptions }: PrescriptionsTabProp
     const sortedPrescriptions = useMemo(
         () =>
             [...prescriptions].sort(
-                (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+                (a, b) =>
+                    new Date(b.prescriptionDate).getTime() -
+                    new Date(a.prescriptionDate).getTime(),
             ),
         [prescriptions],
     )
@@ -34,7 +36,7 @@ export default function PrescriptionsTab({ prescriptions }: PrescriptionsTabProp
                     {sortedPrescriptions.map((prescription) => (
                         <Fragment key={prescription.id}>
                             <tr className="border-t border-slate-200">
-                                <td className="px-3 py-2">{formatDate(prescription.date)}</td>
+                                <td className="px-3 py-2">{formatDate(prescription.prescriptionDate)}</td>
                                 <td className="px-3 py-2">
                                     <span
                                         className={[
@@ -68,18 +70,18 @@ export default function PrescriptionsTab({ prescriptions }: PrescriptionsTabProp
                                     <td className="px-3 py-3" colSpan={5}>
                                         <ul className="grid gap-2">
                                             {prescription.medications.map((medication) => (
-                                                <li key={medication.id} className="border border-slate-200 bg-white p-2">
+                                                <li key={`${medication.name}-${medication.dosage}-${medication.frequency}`} className="border border-slate-200 bg-white p-2">
                                                     <p className="font-semibold text-slate-800">{medication.name}</p>
                                                     <p className="text-xs text-slate-700">
-                                                        Dosis: {medication.dose} | Frecuencia: {medication.frequency} | Duracion:{' '}
+                                                        Dosis: {medication.dosage} | Frecuencia: {medication.frequency} | Duracion:{' '}
                                                         {medication.duration}
                                                     </p>
                                                 </li>
                                             ))}
                                         </ul>
-                                        {prescription.allergyWarning && (
+                                        {prescription.allergyWarnings.length > 0 && (
                                             <p className="mt-2 border border-red-200 bg-red-50 px-2 py-1 text-xs font-semibold text-red-700">
-                                                Advertencia de alergia detectada para esta prescripcion.
+                                                {prescription.allergyWarnings.join(' ')}
                                             </p>
                                         )}
                                     </td>

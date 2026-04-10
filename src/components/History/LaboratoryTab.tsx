@@ -8,22 +8,18 @@ interface LaboratoryTabProps {
 }
 
 function rangeClass(result: LaboratoryResult): string {
-    if (result.value === null || result.referenceMin === null || result.referenceMax === null) {
+    if (result.resultValue === null) {
         return 'border-blue-200 bg-blue-50 text-blue-700'
     }
 
-    return result.value >= result.referenceMin && result.value <= result.referenceMax
+    return result.resultValue >= result.referenceMin && result.resultValue <= result.referenceMax
         ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
         : 'border-orange-300 bg-orange-50 text-orange-700'
 }
 
 function rangeLabel(result: LaboratoryResult): string {
-    if (result.value === null) {
+    if (result.resultValue === null) {
         return 'Pendiente'
-    }
-
-    if (result.referenceMin === null || result.referenceMax === null) {
-        return 'Sin rango'
     }
 
     return `${result.referenceMin} - ${result.referenceMax}`
@@ -32,7 +28,7 @@ function rangeLabel(result: LaboratoryResult): string {
 export default function LaboratoryTab({ results }: LaboratoryTabProps) {
     const sortedResults = useMemo(
         () =>
-            [...results].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+            [...results].sort((a, b) => new Date(b.testDate).getTime() - new Date(a.testDate).getTime()),
         [results],
     )
 
@@ -51,9 +47,9 @@ export default function LaboratoryTab({ results }: LaboratoryTabProps) {
                 <tbody>
                     {sortedResults.map((result) => (
                         <tr key={result.id} className="border-t border-slate-200">
-                            <td className="px-3 py-2">{formatDateTime(result.date)}</td>
-                            <td className="px-3 py-2">{result.testType}</td>
-                            <td className="px-3 py-2">{result.value === null ? 'Pendiente' : result.value}</td>
+                            <td className="px-3 py-2">{formatDateTime(result.testDate)}</td>
+                            <td className="px-3 py-2">{result.testName}</td>
+                            <td className="px-3 py-2">{result.resultValue === null ? 'Pendiente' : result.resultValue}</td>
                             <td className="px-3 py-2">
                                 <span className={`border px-2 py-1 text-xs font-semibold ${rangeClass(result)}`}>
                                     {rangeLabel(result)}

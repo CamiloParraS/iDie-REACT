@@ -14,13 +14,17 @@ export default function ConsultationsTab({ consultations }: ConsultationsTabProp
         const normalized = search.trim().toLowerCase()
 
         return [...consultations]
-            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .sort(
+                (a, b) =>
+                    new Date(b.consultationDate).getTime() -
+                    new Date(a.consultationDate).getTime(),
+            )
             .filter((consultation) => {
                 if (!normalized) {
                     return true
                 }
 
-                return [consultation.doctorName, consultation.diagnosis, consultation.notes]
+                return [consultation.doctorName, consultation.diagnosis, consultation.notes || '']
                     .join(' ')
                     .toLowerCase()
                     .includes(normalized)
@@ -50,7 +54,7 @@ export default function ConsultationsTab({ consultations }: ConsultationsTabProp
                         {filteredConsultations.map((consultation) => (
                             <Fragment key={consultation.id}>
                                 <tr className="border-t border-slate-200">
-                                    <td className="px-3 py-2">{formatDateTime(consultation.date)}</td>
+                                    <td className="px-3 py-2">{formatDateTime(consultation.consultationDate)}</td>
                                     <td className="px-3 py-2">Dr. {consultation.doctorName}</td>
                                     <td className="px-3 py-2">{consultation.diagnosis}</td>
                                     <td className="px-3 py-2">
@@ -70,7 +74,7 @@ export default function ConsultationsTab({ consultations }: ConsultationsTabProp
                                 {expandedId === consultation.id && (
                                     <tr className="border-t border-slate-100 bg-slate-50">
                                         <td className="px-3 py-3 text-slate-700" colSpan={4}>
-                                            <strong>Notas:</strong> {consultation.notes}
+                                            <strong>Notas:</strong> {consultation.notes || 'Sin notas'}
                                         </td>
                                     </tr>
                                 )}

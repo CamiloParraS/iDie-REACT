@@ -18,7 +18,7 @@ export default function PatientInfo({ patient, allergies }: PatientInfoProps) {
                     <strong>Apellidos:</strong> {patient.lastName}
                 </p>
                 <p>
-                    <strong>Documento:</strong> {patient.documentType} {patient.documentNumber}
+                    <strong>Documento:</strong> {patient.documentType} {patient.document}
                 </p>
                 <p>
                     <strong>Email:</strong> {patient.email}
@@ -31,7 +31,7 @@ export default function PatientInfo({ patient, allergies }: PatientInfoProps) {
                 </p>
                 <p className="sm:col-span-2">
                     <strong>Fecha de registro:</strong>{' '}
-                    {patient.registeredAt ? formatDate(patient.registeredAt) : 'No disponible'}
+                    {patient.createdAt ? formatDate(patient.createdAt) : 'No disponible'}
                 </p>
             </div>
 
@@ -55,7 +55,7 @@ export default function PatientInfo({ patient, allergies }: PatientInfoProps) {
                                     key={allergy.id}
                                     className="flex flex-wrap items-center justify-between gap-2 border border-slate-200 p-3"
                                 >
-                                    <span className="font-semibold text-slate-800">{allergy.name}</span>
+                                    <span className="font-semibold text-slate-800">{allergy.allergyName}</span>
                                     <span className={`border px-2 py-1 text-xs font-semibold ${severityClass}`}>
                                         Severidad {severityLabel}
                                     </span>

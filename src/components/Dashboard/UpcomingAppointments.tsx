@@ -22,11 +22,11 @@ export default function UpcomingAppointments({
     return (
         <div className="grid gap-3">
             {appointments.map((appointment) => {
-                const isFuture = isFutureDate(appointment.scheduledAt)
+                const isFuture = isFutureDate(appointment.appointmentDate)
                 const canCancel = appointment.status === 'SCHEDULED' && isFuture
 
                 return (
-                    <article key={appointment.id} className="idie-card p-4">
+                    <article key={appointment.appointmentId} className="idie-card p-4">
                         <div className="flex flex-wrap items-center justify-between gap-2">
                             <div>
                                 <h4 className="text-base font-bold text-blue-900">{appointment.specialty}</h4>
@@ -49,7 +49,7 @@ export default function UpcomingAppointments({
                             </div>
                         </div>
 
-                        <p className="mt-3 text-sm text-slate-800">{formatDateTime(appointment.scheduledAt)}</p>
+                        <p className="mt-3 text-sm text-slate-800">{formatDateTime(appointment.appointmentDate)}</p>
 
                         {canCancel && (
                             <button
@@ -61,7 +61,7 @@ export default function UpcomingAppointments({
                                     )
 
                                     if (accepted) {
-                                        await onCancelAppointment(appointment.id)
+                                        await onCancelAppointment(appointment.appointmentId)
                                     }
                                 }}
                             >
