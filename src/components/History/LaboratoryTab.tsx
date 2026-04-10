@@ -9,12 +9,12 @@ interface LaboratoryTabProps {
 
 function rangeClass(result: LaboratoryResult): string {
     if (result.value === null || result.referenceMin === null || result.referenceMax === null) {
-        return 'border-blue-200 bg-blue-50 text-blue-700'
+        return 'idie-badge-info'
     }
 
     return result.value >= result.referenceMin && result.value <= result.referenceMax
-        ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
-        : 'border-orange-300 bg-orange-50 text-orange-700'
+        ? 'idie-badge-success'
+        : 'idie-badge-warn'
 }
 
 function rangeLabel(result: LaboratoryResult): string {
@@ -37,15 +37,15 @@ export default function LaboratoryTab({ results }: LaboratoryTabProps) {
     )
 
     return (
-        <div className="overflow-x-auto border border-slate-200 bg-white">
-            <table className="min-w-full border-collapse text-sm">
+        <div className="idie-table-wrap">
+            <table className="idie-table">
                 <thead>
                     <tr>
-                        <th className="px-3 py-2 text-left font-semibold">Fecha</th>
-                        <th className="px-3 py-2 text-left font-semibold">Tipo de prueba</th>
-                        <th className="px-3 py-2 text-left font-semibold">Valor</th>
-                        <th className="px-3 py-2 text-left font-semibold">Rango de referencia</th>
-                        <th className="px-3 py-2 text-left font-semibold">Estado</th>
+                        <th>Fecha</th>
+                        <th>Tipo de prueba</th>
+                        <th>Valor</th>
+                        <th>Rango de referencia</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +55,7 @@ export default function LaboratoryTab({ results }: LaboratoryTabProps) {
                             <td className="px-3 py-2">{result.testType}</td>
                             <td className="px-3 py-2">{result.value === null ? 'Pendiente' : result.value}</td>
                             <td className="px-3 py-2">
-                                <span className={`border px-2 py-1 text-xs font-semibold ${rangeClass(result)}`}>
+                                <span className={`idie-badge ${rangeClass(result)}`}>
                                     {rangeLabel(result)}
                                 </span>
                             </td>
@@ -64,7 +64,7 @@ export default function LaboratoryTab({ results }: LaboratoryTabProps) {
                     ))}
                     {sortedResults.length === 0 && (
                         <tr>
-                            <td className="px-3 py-3 text-slate-600" colSpan={5}>
+                            <td className="idie-table-empty" colSpan={5}>
                                 No hay resultados de laboratorio disponibles.
                             </td>
                         </tr>

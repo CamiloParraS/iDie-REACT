@@ -118,7 +118,7 @@ export default function HistoryPage() {
 
     if (error) {
         return (
-            <div className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <div className="idie-alert idie-alert-error">
                 {error}
             </div>
         )
@@ -131,7 +131,7 @@ export default function HistoryPage() {
                     <h2 className="text-2xl font-bold text-blue-900">Historia clinica completa</h2>
                     <button
                         type="button"
-                        className="border border-blue-300 bg-white px-3 py-2 text-sm font-semibold text-blue-800 hover:bg-blue-50"
+                        className="idie-btn-secondary text-sm"
                         onClick={() => window.print()}
                     >
                         Imprimir
@@ -144,10 +144,10 @@ export default function HistoryPage() {
                             key={tabKey}
                             type="button"
                             className={[
-                                'border px-3 py-2 text-sm font-semibold text-left',
+                                'idie-tab-btn',
                                 activeTab === tabKey
-                                    ? 'border-blue-800 bg-blue-800 text-white'
-                                    : 'border-blue-200 bg-blue-50 text-blue-800 hover:bg-blue-100',
+                                    ? 'idie-tab-btn-active'
+                                    : 'idie-tab-btn-inactive',
                             ].join(' ')}
                             onClick={() => setActiveTab(tabKey)}
                         >

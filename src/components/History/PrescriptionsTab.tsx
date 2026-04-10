@@ -19,15 +19,15 @@ export default function PrescriptionsTab({ prescriptions }: PrescriptionsTabProp
     )
 
     return (
-        <div className="overflow-x-auto border border-slate-200 bg-white">
-            <table className="min-w-full border-collapse text-sm">
+        <div className="idie-table-wrap">
+            <table className="idie-table">
                 <thead>
                     <tr>
-                        <th className="px-3 py-2 text-left font-semibold">Fecha</th>
-                        <th className="px-3 py-2 text-left font-semibold">Estado</th>
-                        <th className="px-3 py-2 text-left font-semibold">Medicamentos</th>
-                        <th className="px-3 py-2 text-left font-semibold">Duracion</th>
-                        <th className="px-3 py-2 text-left font-semibold">Detalle</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Medicamentos</th>
+                        <th>Duracion</th>
+                        <th>Detalle</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,10 +38,10 @@ export default function PrescriptionsTab({ prescriptions }: PrescriptionsTabProp
                                 <td className="px-3 py-2">
                                     <span
                                         className={[
-                                            'border px-2 py-1 text-xs font-semibold',
+                                            'idie-badge',
                                             prescription.status === 'ACTIVE'
-                                                ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
-                                                : 'border-slate-300 bg-slate-100 text-slate-700',
+                                                ? 'idie-badge-success'
+                                                : 'idie-badge-neutral',
                                         ].join(' ')}
                                     >
                                         {PRESCRIPTION_STATUS[prescription.status]}
@@ -52,7 +52,7 @@ export default function PrescriptionsTab({ prescriptions }: PrescriptionsTabProp
                                 <td className="px-3 py-2">
                                     <button
                                         type="button"
-                                        className="border border-blue-300 bg-white px-2 py-1 text-xs font-semibold text-blue-700"
+                                        className="idie-btn-secondary idie-btn-secondary-compact"
                                         onClick={() =>
                                             setExpandedId((current) =>
                                                 current === prescription.id ? null : prescription.id,
@@ -78,7 +78,7 @@ export default function PrescriptionsTab({ prescriptions }: PrescriptionsTabProp
                                             ))}
                                         </ul>
                                         {prescription.allergyWarning && (
-                                            <p className="mt-2 border border-red-200 bg-red-50 px-2 py-1 text-xs font-semibold text-red-700">
+                                            <p className="idie-alert idie-alert-error mt-2 text-xs">
                                                 Advertencia de alergia detectada para esta prescripcion.
                                             </p>
                                         )}
@@ -89,7 +89,7 @@ export default function PrescriptionsTab({ prescriptions }: PrescriptionsTabProp
                     ))}
                     {sortedPrescriptions.length === 0 && (
                         <tr>
-                            <td className="px-3 py-3 text-slate-600" colSpan={5}>
+                            <td className="idie-table-empty" colSpan={5}>
                                 No hay prescripciones registradas.
                             </td>
                         </tr>
