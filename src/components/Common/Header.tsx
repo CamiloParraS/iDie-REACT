@@ -5,10 +5,10 @@ import { useAuth } from '../../hooks/useAuth'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     [
-        'border px-3 py-2 text-sm font-semibold transition-colors',
+        'idie-nav-link',
         isActive
-            ? 'border-blue-900 bg-blue-900 text-white'
-            : 'border-blue-200 bg-white text-blue-900 hover:bg-blue-50',
+            ? 'idie-nav-link-active'
+            : 'idie-nav-link-inactive',
     ].join(' ')
 
 export default function Header() {
@@ -35,7 +35,7 @@ export default function Header() {
 
                 <button
                     type="button"
-                    className="border border-blue-600 px-3 py-2 text-sm font-semibold text-blue-700 sm:hidden"
+                    className="idie-btn-secondary text-sm sm:hidden"
                     onClick={() => setMenuOpen((prev) => !prev)}
                 >
                     Menu
@@ -45,7 +45,7 @@ export default function Header() {
                     <p className="text-sm text-slate-700">{fullName || user?.username}</p>
                     <button
                         type="button"
-                        className="idie-btn-primary px-4 py-2 text-sm font-semibold"
+                        className="idie-btn-primary text-sm"
                         onClick={handleLogout}
                     >
                         Cerrar sesion
@@ -55,7 +55,7 @@ export default function Header() {
 
             <div
                 className={[
-                    'border-t border-blue-100 bg-blue-50 sm:hidden',
+                    'border-t border-blue-100 bg-white sm:hidden',
                     menuOpen ? 'block' : 'hidden',
                 ].join(' ')}
             >
@@ -71,7 +71,7 @@ export default function Header() {
                     </NavLink>
                     <button
                         type="button"
-                        className="idie-btn-primary px-4 py-2 text-sm font-semibold"
+                        className="idie-btn-primary text-sm"
                         onClick={handleLogout}
                     >
                         Cerrar sesion

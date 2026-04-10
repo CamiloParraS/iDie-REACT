@@ -34,20 +34,20 @@ export default function ConsultationsTab({ consultations }: ConsultationsTabProp
     return (
         <section className="grid gap-3">
             <input
-                className="idie-input max-w-md px-3 py-2 text-sm"
+                className="idie-input max-w-md text-sm"
                 placeholder="Buscar por medico, diagnostico o nota"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
             />
 
-            <div className="overflow-x-auto border border-slate-200 bg-white">
-                <table className="min-w-full border-collapse text-sm">
+            <div className="idie-table-wrap">
+                <table className="idie-table">
                     <thead>
                         <tr>
-                            <th className="px-3 py-2 text-left font-semibold">Fecha</th>
-                            <th className="px-3 py-2 text-left font-semibold">Medico</th>
-                            <th className="px-3 py-2 text-left font-semibold">Diagnostico</th>
-                            <th className="px-3 py-2 text-left font-semibold">Detalles</th>
+                            <th>Fecha</th>
+                            <th>Medico</th>
+                            <th>Diagnostico</th>
+                            <th>Detalles</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,7 +60,7 @@ export default function ConsultationsTab({ consultations }: ConsultationsTabProp
                                     <td className="px-3 py-2">
                                         <button
                                             type="button"
-                                            className="border border-blue-300 bg-white px-2 py-1 text-xs font-semibold text-blue-700"
+                                            className="idie-btn-secondary idie-btn-secondary-compact"
                                             onClick={() =>
                                                 setExpandedId((current) =>
                                                     current === consultation.id ? null : consultation.id,
@@ -82,7 +82,7 @@ export default function ConsultationsTab({ consultations }: ConsultationsTabProp
                         ))}
                         {filteredConsultations.length === 0 && (
                             <tr>
-                                <td className="px-3 py-3 text-slate-600" colSpan={4}>
+                                <td className="idie-table-empty" colSpan={4}>
                                     No hay consultas para mostrar.
                                 </td>
                             </tr>

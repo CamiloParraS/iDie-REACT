@@ -45,10 +45,10 @@ export default function PatientInfo({ patient, allergies }: PatientInfoProps) {
                             const severityLabel = SEVERITY[allergy.severity]
                             const severityClass =
                                 allergy.severity === 'HIGH'
-                                    ? 'border-red-300 bg-red-50 text-red-700'
+                                    ? 'idie-badge-danger'
                                     : allergy.severity === 'MEDIUM'
-                                        ? 'border-orange-300 bg-orange-50 text-orange-700'
-                                        : 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                                        ? 'idie-badge-warn'
+                                        : 'idie-badge-success'
 
                             return (
                                 <li
@@ -56,7 +56,7 @@ export default function PatientInfo({ patient, allergies }: PatientInfoProps) {
                                     className="flex flex-wrap items-center justify-between gap-2 border border-slate-200 p-3"
                                 >
                                     <span className="font-semibold text-slate-800">{allergy.allergyName}</span>
-                                    <span className={`border px-2 py-1 text-xs font-semibold ${severityClass}`}>
+                                    <span className={`idie-badge ${severityClass}`}>
                                         Severidad {severityLabel}
                                     </span>
                                 </li>
