@@ -1,6 +1,7 @@
 export type BackendErrorCode =
     | 'PATIENT_NOT_FOUND'
     | 'DUPLICATE_DOCUMENT'
+    | 'DUPLICATE_EMAIL'
     | 'APPOINTMENT_NOT_FOUND'
     | 'NO_AVAILABLE_DOCTOR'
     | 'INVALID_CREDENTIALS'
@@ -59,30 +60,45 @@ export interface AuthSession {
 }
 
 export interface LoginRequest {
-    username: string
+    email: string
     password: string
 }
 
 export interface LoginPayload {
-    username: string
+    email: string
     passwordHash: string
 }
 
 export interface LoginResponse {
     token: string
-    username: string
+    email: string
     role: Role
     expiresIn: number
 }
 
 export interface ValidateResponse {
     valid: boolean
-    username: string
+    email: string
     role: Role
 }
 
 export interface LogoutResponse {
-    username: string
+    email: string
+}
+
+export interface RegisterRequest {
+    email: string
+    password: string
+    role: Role
+}
+
+export interface RegisterResponse {
+    id: string
+    email: string
+    role: Role
+    createdAt: string
+    token: string
+    expiresIn: number
 }
 
 export interface RegisterPatientRequest {
@@ -93,6 +109,10 @@ export interface RegisterPatientRequest {
     email: string
     phone: string
     birthDate: string
+}
+
+export interface RegisterFlowRequest extends RegisterPatientRequest {
+    password: string
 }
 
 export interface PatientResponse {

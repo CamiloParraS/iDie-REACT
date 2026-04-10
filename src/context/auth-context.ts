@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import type { AuthUser, LoginRequest, RegisterPatientRequest } from '../types/api'
+import type { AuthUser, LoginRequest, RegisterFlowRequest } from '../types/api'
 
 export interface AuthContextValue {
     token: string | null
@@ -7,7 +7,7 @@ export interface AuthContextValue {
     isAuthenticated: boolean
     isBootstrapping: boolean
     login: (credentials: LoginRequest) => Promise<AuthUser>
-    register: (payload: RegisterPatientRequest) => Promise<boolean>
+    register: (payload: RegisterFlowRequest) => Promise<boolean>
     logout: () => Promise<void>
     validateToken: () => Promise<boolean>
 }

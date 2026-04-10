@@ -39,7 +39,7 @@ export default function LoginPage() {
 
         try {
             const loggedUser = await login({
-                username: form.username.trim(),
+                email: form.username.trim(),
                 password: form.password,
             })
             navigate(fromPath ?? getRouteByRole(loggedUser.role), { replace: true })

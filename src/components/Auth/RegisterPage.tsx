@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { ApiClientError } from '../../utils/apiClient'
 import { ERROR_MESSAGES } from '../../utils/constants'
-import type { RegisterPatientRequest } from '../../types/api'
+import type { RegisterFlowRequest } from '../../types/api'
 
 const DOCUMENT_TYPES = ['CC', 'TI', 'PASAPORTE']
 
@@ -15,6 +15,7 @@ interface RegisterFormState {
     email: string
     phone: string
     birthDate: string
+    password: string
 }
 
 const initialForm: RegisterFormState = {
@@ -25,6 +26,7 @@ const initialForm: RegisterFormState = {
     email: '',
     phone: '',
     birthDate: '',
+    password: '',
 }
 
 function validate(form: RegisterFormState): Partial<Record<keyof RegisterFormState, string>> {
@@ -42,6 +44,7 @@ function validate(form: RegisterFormState): Partial<Record<keyof RegisterFormSta
 
     if (!form.phone.trim()) errors.phone = 'El telefono es obligatorio.'
     if (!form.birthDate.trim()) errors.birthDate = 'La fecha de nacimiento es obligatoria.'
+    if (!form.password.trim()) errors.password = 'La contrasena es obligatoria.'
 
     return errors
 }
@@ -65,7 +68,7 @@ export default function RegisterPage() {
             return
         }
 
-        const payload: RegisterPatientRequest = {
+        const payload: RegisterFlowRequest = {
             firstName: form.firstName.trim(),
             lastName: form.lastName.trim(),
             documentType: form.documentType.toUpperCase(),
@@ -73,6 +76,7 @@ export default function RegisterPage() {
             email: form.email.trim(),
             phone: form.phone.trim(),
             birthDate: form.birthDate,
+            password: form.password,
         }
 
         setIsSubmitting(true)
@@ -205,6 +209,22 @@ export default function RegisterPage() {
                         />
                         {fieldErrors.birthDate && (
                             <span className="text-xs text-red-700">{fieldErrors.birthDate}</span>
+                        )}
+                    </label>
+
+                    <label className="grid gap-1 text-sm font-semibold text-slate-700 md:col-span-2">
+                        Contrasena *
+                        <input
+                            className="idie-input"
+                            type="password"
+                            value={form.password}
+                            onChange={(event) =>
+                                setForm((prev) => ({ ...prev, password: event.target.value }))
+                            }
+                            autoComplete="new-password"
+                        />
+                        {fieldErrors.password && (
+                            <span className="text-xs text-red-700">{fieldErrors.password}</span>
                         )}
                     </label>
 

@@ -5,7 +5,7 @@ import {
     useState,
     type PropsWithChildren,
 } from 'react'
-import type { AuthSession, AuthUser, LoginRequest, RegisterPatientRequest } from '../types/api'
+import type { AuthSession, AuthUser, LoginRequest, RegisterFlowRequest } from '../types/api'
 import { ApiClientError } from '../utils/apiClient'
 import { registerPatient } from '../services/patientService'
 import * as authService from '../services/authService'
@@ -89,16 +89,31 @@ export function AuthProvider({ children }: PropsWithChildren) {
     )
 
     const register = useCallback(
-        async (payload: RegisterPatientRequest): Promise<boolean> => {
-            const response = await registerPatient(payload)
-            const session = authService.sessionFromRegister(response)
+        async (payload: RegisterFlowRequest): Promise<boolean> => {
+            const patient = await registerPatient({
+                firstName: payload.firstName,
+                lastName: payload.lastName,
+                documentType: payload.documentType,
+                document: payload.document,
+                email: payload.email,
+                phone: payload.phone,
+                birthDate: payload.birthDate,
+            })
 
-            if (session) {
-                applySession(session)
-                return true
-            }
+            authService.linkPatientToEmail(payload.email, patient.id)
 
-            return false
+            const session = await authService.register({
+                email: payload.email,
+                password: payload.password,
+                role: 'RECEPTIONIST',
+            })
+
+            session.user.patientId = patient.id
+            session.user.firstName = patient.firstName
+            session.user.lastName = patient.lastName
+
+            applySession(session)
+            return true
         },
         [applySession],
     )

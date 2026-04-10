@@ -41,6 +41,7 @@ export const ERROR_MESSAGES: Record<BackendErrorCode, string> = {
     INVALID_CREDENTIALS: 'Usuario o contrasena incorrectos.',
     INVALID_TOKEN: 'Tu sesion expiro. Inicia sesion nuevamente.',
     DUPLICATE_DOCUMENT: 'El numero de documento ya esta registrado.',
+    DUPLICATE_EMAIL: 'El correo ya esta registrado.',
     NO_AVAILABLE_DOCTOR: 'No hay medicos disponibles para la especialidad seleccionada.',
     PATIENT_NOT_FOUND: 'No se encontro el paciente solicitado.',
     APPOINTMENT_NOT_FOUND: 'La cita ya no existe o fue eliminada.',
