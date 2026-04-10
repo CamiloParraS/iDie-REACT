@@ -116,11 +116,11 @@ export default function DashboardPage() {
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-2">
-                    <Link className="idie-btn-primary px-4 py-2 text-sm font-semibold" to="/citas/nueva">
+                    <Link className="idie-btn-primary text-sm" to="/citas/nueva">
                         Agendar nueva cita
                     </Link>
                     <Link
-                        className="border border-blue-300 bg-white px-4 py-2 text-sm font-semibold text-blue-800 hover:bg-blue-50"
+                        className="idie-btn-secondary text-sm"
                         to="/historia"
                     >
                         Ver historia clinica completa
@@ -129,13 +129,13 @@ export default function DashboardPage() {
             </div>
 
             {notice && (
-                <div className="border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700">
+                <div className="idie-alert idie-alert-success">
                     {notice}
                 </div>
             )}
 
             {error && (
-                <div className="border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+                <div className="idie-alert idie-alert-error">
                     {error}
                 </div>
             )}
@@ -153,7 +153,7 @@ export default function DashboardPage() {
                     <h3 className="text-lg font-bold text-blue-900">Ultimos resultados</h3>
                     <LatestResults results={latestResults} />
                     <div>
-                        <Link className="text-sm font-semibold text-blue-700 underline" to="/historia">
+                        <Link className="idie-link text-sm" to="/historia">
                             Ir a historia clinica completa
                         </Link>
                     </div>

@@ -70,7 +70,7 @@ export default function LoginPage() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Usuario
                         <input
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             type="text"
                             value={form.username}
                             onChange={(event) =>
@@ -84,7 +84,7 @@ export default function LoginPage() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Contrasena
                         <input
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             type="password"
                             value={form.password}
                             onChange={(event) =>
@@ -96,14 +96,14 @@ export default function LoginPage() {
                     </label>
 
                     {error && (
-                        <div className="border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                        <div className="idie-alert idie-alert-error">
                             {error}
                         </div>
                     )}
 
                     <button
                         type="submit"
-                        className="idie-btn-primary mt-2 px-4 py-2 font-semibold disabled:opacity-60"
+                        className="idie-btn-primary mt-2"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? 'Validando...' : 'Entrar'}
@@ -112,7 +112,7 @@ export default function LoginPage() {
 
                 <p className="mt-4 text-sm text-slate-700">
                     No tienes cuenta?{' '}
-                    <Link className="font-semibold text-blue-700 underline" to="/registro">
+                    <Link className="idie-link" to="/registro">
                         Registrate aqui
                     </Link>
                 </p>

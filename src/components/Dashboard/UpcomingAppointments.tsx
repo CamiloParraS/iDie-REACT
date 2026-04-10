@@ -35,15 +35,15 @@ export default function UpcomingAppointments({
                             <div className="flex gap-2">
                                 <span
                                     className={[
-                                        'border px-2 py-1 text-xs font-semibold',
+                                        'idie-badge',
                                         isFuture
-                                            ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
-                                            : 'border-amber-300 bg-amber-50 text-amber-700',
+                                            ? 'idie-badge-success'
+                                            : 'idie-badge-warn',
                                     ].join(' ')}
                                 >
                                     {isFuture ? 'Proxima' : 'Historica'}
                                 </span>
-                                <span className="border border-blue-200 bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-800">
+                                <span className="idie-badge idie-badge-info">
                                     {APPOINTMENT_STATUS[appointment.status] || appointment.status}
                                 </span>
                             </div>
@@ -54,7 +54,7 @@ export default function UpcomingAppointments({
                         {canCancel && (
                             <button
                                 type="button"
-                                className="mt-3 border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-semibold text-red-700 hover:bg-red-100"
+                                className="idie-btn-danger idie-btn-danger-compact mt-3"
                                 onClick={async () => {
                                     const accepted = window.confirm(
                                         'Vas a cancelar esta cita. Deseas continuar?',

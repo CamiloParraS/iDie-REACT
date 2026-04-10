@@ -44,12 +44,12 @@ export default function LatestResults({ results }: LatestResultsProps) {
                             </span>
                             <span
                                 className={[
-                                    'border px-2 py-1 text-xs',
+                                    'idie-badge',
                                     state === 'normal'
-                                        ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                                        ? 'idie-badge-success'
                                         : state === 'out'
-                                            ? 'border-orange-300 bg-orange-50 text-orange-700'
-                                            : 'border-blue-200 bg-blue-50 text-blue-700',
+                                            ? 'idie-badge-warn'
+                                            : 'idie-badge-info',
                                 ].join(' ')}
                             >
                                 {state === 'normal'

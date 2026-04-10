@@ -116,7 +116,7 @@ export default function RegisterPage() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Nombres *
                         <input
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             value={form.firstName}
                             onChange={(event) =>
                                 setForm((prev) => ({ ...prev, firstName: event.target.value }))
@@ -128,7 +128,7 @@ export default function RegisterPage() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Apellidos *
                         <input
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             value={form.lastName}
                             onChange={(event) =>
                                 setForm((prev) => ({ ...prev, lastName: event.target.value }))
@@ -140,7 +140,7 @@ export default function RegisterPage() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Tipo de documento *
                         <select
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             value={form.documentType}
                             onChange={(event) =>
                                 setForm((prev) => ({ ...prev, documentType: event.target.value }))
@@ -157,7 +157,7 @@ export default function RegisterPage() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Numero de documento *
                         <input
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             value={form.documentNumber}
                             onChange={(event) =>
                                 setForm((prev) => ({ ...prev, documentNumber: event.target.value }))
@@ -171,7 +171,7 @@ export default function RegisterPage() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Email *
                         <input
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             type="email"
                             value={form.email}
                             onChange={(event) =>
@@ -184,7 +184,7 @@ export default function RegisterPage() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Telefono *
                         <input
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             value={form.phone}
                             onChange={(event) =>
                                 setForm((prev) => ({ ...prev, phone: event.target.value }))
@@ -196,7 +196,7 @@ export default function RegisterPage() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700 md:col-span-2">
                         Fecha de nacimiento *
                         <input
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             type="date"
                             value={form.birthDate}
                             onChange={(event) =>
@@ -209,14 +209,14 @@ export default function RegisterPage() {
                     </label>
 
                     {serverError && (
-                        <div className="md:col-span-2 border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                        <div className="idie-alert idie-alert-error md:col-span-2">
                             {serverError}
                         </div>
                     )}
 
                     <button
                         type="submit"
-                        className="idie-btn-primary md:col-span-2 px-4 py-2 font-semibold disabled:opacity-60"
+                        className="idie-btn-primary md:col-span-2"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? 'Registrando...' : 'Crear cuenta'}
@@ -225,7 +225,7 @@ export default function RegisterPage() {
 
                 <p className="mt-4 text-sm text-slate-700">
                     Ya tienes cuenta?{' '}
-                    <Link className="font-semibold text-blue-700 underline" to="/login">
+                    <Link className="idie-link" to="/login">
                         Inicia sesion
                     </Link>
                 </p>
