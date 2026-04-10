@@ -15,7 +15,7 @@ export default function SpecialtySelector({
         <label className="grid gap-1 text-sm font-semibold text-slate-700">
             Especialidad
             <select
-                className="idie-input px-3 py-2"
+                className="idie-input"
                 value={value}
                 disabled={disabled}
                 onChange={(event) => onChange(event.target.value as keyof typeof SPECIALTIES)}

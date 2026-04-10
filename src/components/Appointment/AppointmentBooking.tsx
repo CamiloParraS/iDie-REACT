@@ -163,7 +163,7 @@ export default function AppointmentBooking() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Medico disponible
                         <select
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             value={selectedDoctorId}
                             onChange={(event) => {
                                 setSelectedDoctorId(event.target.value)
@@ -182,7 +182,7 @@ export default function AppointmentBooking() {
                     <label className="grid gap-1 text-sm font-semibold text-slate-700">
                         Horario disponible
                         <select
-                            className="idie-input px-3 py-2"
+                            className="idie-input"
                             value={selectedSlot}
                             onChange={(event) => setSelectedSlot(event.target.value)}
                             disabled={!selectedDoctorId}
@@ -199,14 +199,14 @@ export default function AppointmentBooking() {
                     <div className="flex flex-wrap gap-2">
                         <button
                             type="button"
-                            className="border border-blue-300 bg-white px-4 py-2 text-sm font-semibold text-blue-800 hover:bg-blue-50"
+                            className="idie-btn-secondary text-sm"
                             onClick={() => setStep(1)}
                         >
                             Volver
                         </button>
                         <button
                             type="button"
-                            className="idie-btn-primary px-4 py-2 text-sm font-semibold"
+                            className="idie-btn-primary text-sm"
                             onClick={goToConfirmation}
                         >
                             Continuar a confirmacion
@@ -233,14 +233,14 @@ export default function AppointmentBooking() {
                         <div className="flex flex-wrap gap-2">
                             <button
                                 type="button"
-                                className="border border-blue-300 bg-white px-4 py-2 text-sm font-semibold text-blue-800 hover:bg-blue-50"
+                                className="idie-btn-secondary text-sm"
                                 onClick={() => setStep(2)}
                             >
                                 Volver
                             </button>
                             <button
                                 type="button"
-                                className="idie-btn-primary px-4 py-2 text-sm font-semibold disabled:opacity-60"
+                                className="idie-btn-primary text-sm"
                                 onClick={onConfirmAppointment}
                                 disabled={isSubmitting}
                             >
@@ -248,7 +248,7 @@ export default function AppointmentBooking() {
                             </button>
                         </div>
                     ) : (
-                        <div className="grid gap-3 border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
+                        <div className="idie-alert idie-alert-success grid gap-3 p-4 text-sm">
                             <p className="font-semibold">Cita programada correctamente.</p>
                             <p>
                                 <strong>ID:</strong> {confirmation.appointment.id}
@@ -260,13 +260,13 @@ export default function AppointmentBooking() {
                             <div className="flex flex-wrap gap-2">
                                 <button
                                     type="button"
-                                    className="idie-btn-primary px-4 py-2 text-sm font-semibold"
+                                    className="idie-btn-primary text-sm"
                                     onClick={() => navigate('/dashboard')}
                                 >
                                     Ir al dashboard
                                 </button>
                                 <Link
-                                    className="border border-blue-300 bg-white px-4 py-2 text-sm font-semibold text-blue-800 hover:bg-blue-50"
+                                    className="idie-btn-secondary text-sm"
                                     to="/historia"
                                 >
                                     Ver historia clinica
@@ -278,7 +278,7 @@ export default function AppointmentBooking() {
             )}
 
             {error && (
-                <div className="border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">{error}</div>
+                <div className="idie-alert idie-alert-error">{error}</div>
             )}
         </section>
     )
